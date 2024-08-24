@@ -15,7 +15,6 @@ class _App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'NotoSans'
       ),
-      debugShowCheckedModeBanner: false,
       home: LoginScreen(),
     );
   }
