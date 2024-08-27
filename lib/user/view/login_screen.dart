@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:code_factory_app/common/component/custom_text_form_field.dart';
 import 'package:code_factory_app/common/layout/default_layout.dart';
 import 'package:code_factory_app/common/const/colors.dart';
+import 'package:code_factory_app/common/view/root_tab.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         headers: {
                           'authorization': 'Basic $token',
                         },
+                      ),
+                    );
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => RootTab(),
                       ),
                     );
 
