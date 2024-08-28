@@ -9,8 +9,32 @@ class RootTab extends StatefulWidget {
   State<RootTab> createState() => _RootTabState();
 }
 
-class _RootTabState extends State<RootTab> {
+class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
   int index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    tabController = TabController(length: 4, vsync: this);
+
+    tabController.addListener(tabListener);
+  }
+
+  void tabListener() {
+    setState(() {
+      index = tabController.index;
+    });
+  }
+
+  @override
+  void dispose() {
+    tabController.removeListener(tabListener);
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +48,7 @@ class _RootTabState extends State<RootTab> {
           unselectedFontSize: 10,
           type: BottomNavigationBarType.fixed,
           onTap: (int index) {
-            setState(() {
-              print(index);
-              this.index = index;
-            });
+            tabController.animateTo(index);
           },
           currentIndex: index,
           items: const [
@@ -40,8 +61,15 @@ class _RootTabState extends State<RootTab> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_outlined), label: '프로필'),
           ]),
-      child: Center(
-        child: Text('Root Tab'),
+      child: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: tabController,
+        children: [
+          Center(child: Container(child: Text('홈'))),
+          Center(child: Container(child: Text('음식'))),
+          Center(child: Container(child: Text('주문'))),
+          Center(child: Container(child: Text('프로필'))),
+        ],
       ),
     );
   }
