@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:code_factory_app/common/const/data.dart';
 import 'package:code_factory_app/restaurant/component/RestaurantCard.dart';
 import 'package:code_factory_app/restaurant/model/restaurant_model.dart';
@@ -46,17 +48,8 @@ class RestaurantScreen extends StatelessWidget {
                       json: item,
                     );
 
-                    return RestaurantCard(
-                      image: Image.network(
-                        pItem.thumbUrl,
-                        fit: BoxFit.cover,
-                      ),
-                      name: pItem.name,
-                      tags: pItem.tags,
-                      ratingsCount: pItem.ratingsCount,
-                      deliveryTime: pItem.deliveryTime,
-                      deliveryFee: pItem.deliveryFee,
-                      ratings: pItem.ratings,
+                    return RestaurantCard.fromModel(
+                      model: pItem,
                     );
                   },
                   separatorBuilder: (_, index) {
