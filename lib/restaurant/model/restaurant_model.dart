@@ -1,4 +1,4 @@
-import 'package:code_factory_app/common/const/data.dart';
+import 'package:code_factory_app/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // terminal : flutter pub run build_runner build - 일회성
@@ -17,7 +17,7 @@ class RestaurantModel {
   final String name;
 
   @JsonKey(
-    fromJson: pathToUrl,
+    fromJson: DataUtils.pathToUrl,
   )
   final String thumbUrl;
   final List<String> tags;
@@ -62,7 +62,5 @@ class RestaurantModel {
 
   Map<String,dynamic> toJson() => _$RestaurantModelToJson(this);
 
-  static pathToUrl(String value){
-    return 'http://$ip$value';
-  }
+
 }
