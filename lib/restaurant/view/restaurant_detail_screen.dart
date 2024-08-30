@@ -1,4 +1,5 @@
 import 'package:code_factory_app/common/const/data.dart';
+import 'package:code_factory_app/common/dio/dio.dart';
 import 'package:code_factory_app/common/layout/default_layout.dart';
 import 'package:code_factory_app/product/component/product_card.dart';
 import 'package:code_factory_app/restaurant/component/RestaurantCard.dart';
@@ -17,6 +18,12 @@ class RestaurantDetailScreen extends StatelessWidget {
 
   Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
+
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage,
+      ),
+    );
 
     final repository = RestaurantRepository(dio,baseUrl: 'http://$ip/restaurant');
 

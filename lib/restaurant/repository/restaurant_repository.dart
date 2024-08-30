@@ -17,7 +17,7 @@ abstract class RestaurantRepository {
   // http://$ip/restaurant/:id
   @GET('/{id}')
   @Headers({
-    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzI0OTkwNTQ1LCJleHAiOjE3MjQ5OTA4NDV9.J4rMLscvl-lPbZyz2R4YXMTmWEsQ8D7QGYbfv6W39KY'
+    'accessToken': 'true',
   })
   Future<RestaurantDetailModel> getRestaurantDetail({
     @Path() required String id,
