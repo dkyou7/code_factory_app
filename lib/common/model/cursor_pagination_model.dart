@@ -45,11 +45,11 @@ class CursorPaginationMeta {
 }
 
 // 새로고침 할 때
-class CursorPaginationRefetching extends CursorPagination{
+class CursorPaginationRefetching<T> extends CursorPagination<T>{
   CursorPaginationRefetching({required super.meta, required super.data});
 }
 
 // 리스트 추가 데이터 요청 하는 중일때
-class CursorPaginationRefetchingMore extends CursorPagination{
+class CursorPaginationRefetchingMore<T> extends CursorPagination<T>{
   CursorPaginationRefetchingMore({required super.meta, required super.data});
 }
