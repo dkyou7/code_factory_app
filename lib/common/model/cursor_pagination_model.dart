@@ -4,7 +4,7 @@ part 'cursor_pagination_model.g.dart';
 
 abstract class CursorPaginationBase {}
 
-class CursorPaginationError extends CursorPaginationBase{
+class CursorPaginationError extends CursorPaginationBase {
   final String message;
 
   CursorPaginationError({
@@ -12,7 +12,7 @@ class CursorPaginationError extends CursorPaginationBase{
   });
 }
 
-class CursorPaginationLoading extends CursorPaginationBase{}
+class CursorPaginationLoading extends CursorPaginationBase {}
 
 @JsonSerializable(
   genericArgumentFactories: true,
@@ -26,7 +26,18 @@ class CursorPagination<T> extends CursorPaginationBase {
     required this.data,
   });
 
-  factory CursorPagination.fromJson(Map<String, dynamic> json, T Function(Object? json) fromJsonT)
+  CursorPagination copyWith({
+    CursorPaginationMeta? meta,
+    List<T>? data,
+  }) {
+    return CursorPagination(
+        meta: meta ?? this.meta,
+        data: data ?? this.data,
+    );
+  }
+
+  factory CursorPagination.fromJson(Map<String, dynamic> json,
+      T Function(Object? json) fromJsonT)
   => _$CursorPaginationFromJson(json, fromJsonT);
 }
 
@@ -40,16 +51,26 @@ class CursorPaginationMeta {
     required this.hasMore,
   });
 
+  CursorPaginationMeta copyWith({
+    int? count,
+    bool? hasMore,
+  }) {
+    return CursorPaginationMeta(
+      count: count ?? this.count,
+      hasMore: hasMore ?? this.hasMore,
+    );
+  }
+
   factory CursorPaginationMeta.fromJson(Map<String, dynamic> json) =>
       _$CursorPaginationMetaFromJson(json);
 }
 
 // 새로고침 할 때
-class CursorPaginationRefetching<T> extends CursorPagination<T>{
+class CursorPaginationRefetching<T> extends CursorPagination<T> {
   CursorPaginationRefetching({required super.meta, required super.data});
 }
 
 // 리스트 추가 데이터 요청 하는 중일때
-class CursorPaginationRefetchingMore<T> extends CursorPagination<T>{
+class CursorPaginationRefetchingMore<T> extends CursorPagination<T> {
   CursorPaginationRefetchingMore({required super.meta, required super.data});
 }
