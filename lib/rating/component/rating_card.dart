@@ -1,6 +1,8 @@
 import 'package:code_factory_app/common/const/colors.dart';
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
+
 class RatingCard extends StatelessWidget {
   // NetworkImage
   // AssetImage
@@ -20,14 +22,14 @@ class RatingCard extends StatelessWidget {
   // 리뷰 내용
   final String content;
 
-  const RatingCard({
-    required this.avatarImage,
-    required this.images,
-    required this.rating,
-    required this.email,
-    required this.content,
-    Key? key
-  }) : super(key: key);
+  const RatingCard(
+      {required this.avatarImage,
+      required this.images,
+      required this.rating,
+      required this.email,
+      required this.content,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +40,19 @@ class RatingCard extends StatelessWidget {
           email: email,
           rating: rating,
         ),
-        const SizedBox(height: 8.0,),
+        const SizedBox(
+          height: 8.0,
+        ),
         _Body(
           content: content,
         ),
-        _Images(),
+        if (images.isNotEmpty)
+          SizedBox(
+            height: 100,
+            child: _Images(
+              images: images,
+            ),
+          ),
       ],
     );
   }
@@ -120,10 +130,33 @@ class _Body extends StatelessWidget {
 }
 
 class _Images extends StatelessWidget {
-  const _Images({Key? key}) : super(key: key);
+  // 리스트로 위젯 이미지를 보여줄때
+  final List<Image> images;
+
+  const _Images({
+    required this.images,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      // import 'package:collection/collection.dart';
+      // 시 mapIndexed 사용 가능
+      children: images
+          .mapIndexed(
+            (index, e) => Padding(
+              padding: EdgeInsets.only(
+                right: index == images.length - 1 ? 0 : 16.0,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: e,
+              ),
+            ),
+          )
+          .toList(),
+    );
   }
 }

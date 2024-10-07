@@ -62,7 +62,7 @@ class _RestaurantDetailScreenState
                 email: 'jc@codefactory.ai',
                 images: [],
                 avatarImage: AssetImage(
-                  'asset/img/logo/codefactory_logo.png'
+                    'asset/img/logo/codefactory_logo.png'
                 ),
                 content: '맛있습니다.',
               ),
