@@ -1,5 +1,6 @@
 import 'package:code_factory_app/common/layout/default_layout.dart';
 import 'package:code_factory_app/product/component/product_card.dart';
+import 'package:code_factory_app/rating/component/rating_card.dart';
 import 'package:code_factory_app/restaurant/component/RestaurantCard.dart';
 import 'package:code_factory_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:code_factory_app/restaurant/model/restaurant_model.dart';
@@ -53,6 +54,20 @@ class _RestaurantDetailScreenState
             renderProducts(
               products: state.products,
             ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            sliver: SliverToBoxAdapter(
+              child: RatingCard(
+                rating: 3,
+                email: 'jc@codefactory.ai',
+                images: [],
+                avatarImage: AssetImage(
+                  'asset/img/logo/codefactory_logo.png'
+                ),
+                content: '맛있습니다.',
+              ),
+            ),
+          )
         ],
       ),
     );
