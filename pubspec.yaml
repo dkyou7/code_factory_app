@@ -42,6 +42,7 @@ dependencies:
   logger: any  #for logging purpose
   analyzer: ^5.13.0
   flutter_riverpod: ^1.0.4
+  flutter_skeleton_ui: ^0.0.6
 
 dev_dependencies:
   build_runner: ^2.3.3
