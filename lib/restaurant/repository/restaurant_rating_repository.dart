@@ -11,7 +11,7 @@ import '../../common/dio/dio.dart';
 
 part 'restaurant_rating_repository.g.dart';
 
-final restaurantRepositoryProvider
+final restaurantRatingRepositoryProvider
 = Provider.family<RestaurantRatingRepository,String>
   ((ref,id) {
     final dio = ref.watch(dioProvider);
