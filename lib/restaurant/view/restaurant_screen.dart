@@ -1,8 +1,7 @@
 import 'package:code_factory_app/common/model/cursor_pagination_model.dart';
+import 'package:code_factory_app/common/utils/pagination_utils.dart';
 import 'package:code_factory_app/restaurant/component/RestaurantCard.dart';
-import 'package:code_factory_app/restaurant/model/restaurant_model.dart';
 import 'package:code_factory_app/restaurant/provider/restaurant_provider.dart';
-import 'package:code_factory_app/restaurant/repository/restaurant_repository.dart';
 import 'package:code_factory_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,15 +22,16 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     controller.addListener(scrollListener);
   }
 
-  void scrollListener(){
+  void scrollListener() {
     // 현재 위치가
     // 최대 길이보다 조금 덜되는 위치까지 왔다면
     // 새로운 데이터를 추가요청
-    if(controller.offset > controller.position.maxScrollExtent - 300){
-      ref.read(restaurantProvider.notifier).paginate(
-        fetchMore: true,
-      );
-    }
+    PaginationUtils.paginate(
+      controller: controller,
+      provider: ref.read(
+        restaurantProvider.notifier,
+      ),
+    );
   }
 
   @override
@@ -39,14 +39,14 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     final data = ref.watch(restaurantProvider);
 
     // 완전 처음 로딩일때
-    if(data is CursorPaginationLoading){
+    if (data is CursorPaginationLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
 
     // 에러
-    if(data is CursorPaginationError){
+    if (data is CursorPaginationError) {
       return Center(
         child: Text(data.message),
       );
@@ -58,43 +58,42 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     final cp = data as CursorPagination;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ListView.separated(
-        controller: controller,
-        itemCount: cp.data.length + 1,
-        itemBuilder: (_, index) {
-          if (index == cp.data.length) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Center(
-                child: data is CursorPaginationRefetchingMore
-                    ? const CircularProgressIndicator()
-                    : const Text('마지막 데이터입니다 ㅠㅠ'),
-              ),
-            );
-          }
-          final pItem = cp.data[index];
-          return GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => RestaurantDetailScreen(
-                      id: pItem.id,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: ListView.separated(
+          controller: controller,
+          itemCount: cp.data.length + 1,
+          itemBuilder: (_, index) {
+            if (index == cp.data.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Center(
+                  child: data is CursorPaginationRefetchingMore
+                      ? const CircularProgressIndicator()
+                      : const Text('마지막 데이터입니다 ㅠㅠ'),
+                ),
+              );
+            }
+            final pItem = cp.data[index];
+            return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => RestaurantDetailScreen(
+                        id: pItem.id,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: RestaurantCard.fromModel(
-                model: pItem,
-              ));
-        },
-        separatorBuilder: (_, index) {
-          return SizedBox(height: 24.0);
-        },
-      )
-    );
+                  );
+                },
+                child: RestaurantCard.fromModel(
+                  model: pItem,
+                ));
+          },
+          separatorBuilder: (_, index) {
+            return SizedBox(height: 24.0);
+          },
+        ));
   }
 }
