@@ -7,7 +7,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'user_me_repository.g.dart';
 
-final UserMeRepositoryProvider = Provider<UserMeRepository>(
+final userMeRepositoryProvider = Provider<UserMeRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
 
