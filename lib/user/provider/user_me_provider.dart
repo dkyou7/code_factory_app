@@ -21,6 +21,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?>{
     final accessToken = await flutterSecureStorage.read(key: ACCESS_TOKEN_KEY);
 
     if(refreshToken == null || accessToken == null){
+      state = null;
       return;
     }
 
