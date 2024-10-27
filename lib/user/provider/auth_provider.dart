@@ -54,6 +54,10 @@ class AuthProvider extends ChangeNotifier {
         ),
       ];
 
+  void logout(){
+    ref.read(userMeProvider.notifier).logout();
+  }
+
   /// SplashScreen 에서
   /// 토큰 존재 여부를 확인하고
   /// 로그인 페이지로 보낼 지
