@@ -4,8 +4,13 @@ import 'package:collection/collection.dart';
 
 import '../../product/model/product_model.dart';
 
+final basketProvider =
+    StateNotifierProvider<BasketProvider, List<BasketItemModel>>((ref) {
+  return BasketProvider();
+});
+
 class BasketProvider extends StateNotifier<List<BasketItemModel>> {
-  BasketProvider(super.state);
+  BasketProvider() : super([]);
 
   Future<void> addToBasket({
     required ProductModel product,
