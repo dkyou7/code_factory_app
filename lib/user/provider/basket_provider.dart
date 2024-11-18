@@ -1,4 +1,6 @@
 import 'package:code_factory_app/user/model/basket_item_model.dart';
+import 'package:code_factory_app/user/model/patch_basket_body.dart';
+import 'package:code_factory_app/user/repository/user_me_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
@@ -6,11 +8,34 @@ import '../../product/model/product_model.dart';
 
 final basketProvider =
     StateNotifierProvider<BasketProvider, List<BasketItemModel>>((ref) {
-  return BasketProvider();
+  final repository = ref.watch(userMeRepositoryProvider);
+
+  return BasketProvider(
+    repository: repository,
+  );
 });
 
 class BasketProvider extends StateNotifier<List<BasketItemModel>> {
-  BasketProvider() : super([]);
+  final UserMeRepository repository;
+
+  BasketProvider({
+    required this.repository,
+  }) : super([]);
+
+  Future<void> patchBasket() async{
+    await repository.patchBasket(
+      body: PatchBasketBody(
+        basket: state
+            .map(
+              (e) => PatchBasketBodyBasket(
+                productId: e.product.id,
+                count: e.count,
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
 
   Future<void> addToBasket({
     required ProductModel product,
@@ -43,6 +68,9 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
         ),
       ];
     }
+    // 긍정적 응답(Optimistic Response)
+    // 될 것을 예상하고, 실제 응답 요청은 나중에 보냄
+    await patchBasket();
   }
 
   Future<void> removeFromBasket({
@@ -81,5 +109,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
           )
           .toList();
     }
+
+    await patchBasket();
   }
 }
