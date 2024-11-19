@@ -4,6 +4,7 @@ import 'package:code_factory_app/common/model/cursor_pagination_model.dart';
 import 'package:code_factory_app/common/utils/pagination_utils.dart';
 import 'package:code_factory_app/product/component/product_card.dart';
 import 'package:code_factory_app/product/model/product_model.dart';
+import 'package:code_factory_app/product/view/product_screen.dart';
 import 'package:code_factory_app/rating/component/rating_card.dart';
 import 'package:code_factory_app/rating/model/rating_model.dart';
 import 'package:code_factory_app/restaurant/component/RestaurantCard.dart';
@@ -11,11 +12,13 @@ import 'package:code_factory_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:code_factory_app/restaurant/model/restaurant_model.dart';
 import 'package:code_factory_app/restaurant/provider/restaurant_provider.dart';
 import 'package:code_factory_app/restaurant/provider/restaurant_rating_provider.dart';
+import 'package:code_factory_app/restaurant/view/basket_screen.dart';
 import 'package:code_factory_app/user/provider/basket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_skeleton_ui/flutter_skeleton_ui.dart';
 import 'package:badges/badges.dart' as badge;
+import 'package:go_router/go_router.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
   static String get routeName => 'RestaurantDetail';
@@ -69,7 +72,9 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
       title: '불타는 떡볶이',
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.pushNamed(BasketScreen.routeName);
+        },
         backgroundColor: PRIMARY_COLOR,
         child: badge.Badge(
           // 0 이면 안보여줘도 된다.

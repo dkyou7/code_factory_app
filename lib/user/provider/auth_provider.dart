@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:code_factory_app/common/view/root_tab.dart';
 import 'package:code_factory_app/common/view/splash_screen.dart';
+import 'package:code_factory_app/restaurant/view/basket_screen.dart';
 import 'package:code_factory_app/restaurant/view/restaurant_detail_screen.dart';
 import 'package:code_factory_app/user/model/user_model.dart';
 import 'package:code_factory_app/user/provider/user_me_provider.dart';
@@ -43,6 +44,11 @@ class AuthProvider extends ChangeNotifier {
           ],
         ),
         GoRoute(
+          path: '/basket',
+          name: BasketScreen.routeName,
+          builder: (_, state) => BasketScreen(),
+        ),
+        GoRoute(
           path: '/splash',
           name: SplashScreen.routeName,
           builder: (_, __) => SplashScreen(),
@@ -54,7 +60,7 @@ class AuthProvider extends ChangeNotifier {
         ),
       ];
 
-  void logout(){
+  void logout() {
     ref.read(userMeProvider.notifier).logout();
   }
 
@@ -80,7 +86,7 @@ class AuthProvider extends ChangeNotifier {
       return logginIn || state.matchedLocation == '/splash' ? '/' : null;
     }
     // UserModelError
-    if(user is UserModelError){
+    if (user is UserModelError) {
       return !logginIn ? '/login' : null;
     }
     return null;
