@@ -1,9 +1,12 @@
 import 'package:code_factory_app/common/const/colors.dart';
 import 'package:code_factory_app/common/layout/default_layout.dart';
+import 'package:code_factory_app/order/provider/order_provider.dart';
+import 'package:code_factory_app/order/view/order_done_screen.dart';
 import 'package:code_factory_app/product/component/product_card.dart';
 import 'package:code_factory_app/user/provider/basket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class BasketScreen extends ConsumerWidget {
   static String get routeName => 'basket';
@@ -16,11 +19,10 @@ class BasketScreen extends ConsumerWidget {
 
     if (basket.isEmpty) {
       return DefaultLayout(
-        title: '장바구니',
-        child: Center(
-          child: Text('장바구니가 비어있습니다.'),
-        )
-      );
+          title: '장바구니',
+          child: Center(
+            child: Text('장바구니가 비어있습니다.'),
+          ));
     }
 
     final productTotal = basket.fold(
@@ -111,7 +113,18 @@ class BasketScreen extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final resp =
+                            await ref.read(orderProvider.notifier).postOrder();
+
+                        if (resp) {
+                          context.goNamed(OrderDoneScreen.routeName);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('결제 실패'),
+                          ));
+                        }
+                      },
                       child: Text('결제하기'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PRIMARY_COLOR,
